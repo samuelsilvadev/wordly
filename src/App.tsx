@@ -1,10 +1,10 @@
 import { Routes, Route } from "react-router-dom";
+import Orchestrator from "components/orchestrator/Orchestrator";
 
 function App() {
   return (
     <Routes>
-      <Route path="/" element={<h1>Root Route</h1>} />
-      <Route path="/example" element={<h1>Example Route</h1>} />
+      <Route path="/" element={<Orchestrator />} />
     </Routes>
   );
 }

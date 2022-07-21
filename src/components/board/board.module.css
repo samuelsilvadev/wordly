@@ -1,0 +1,34 @@
+.wrapper {
+  display: grid;
+  place-items: center;
+  width: 100vw;
+  height: 100vh;
+}
+
+.board {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.board > li:not(:last-child) {
+  margin-bottom: 10px;
+}
+
+.line {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  gap: 10px;
+}
+
+.tile {
+  width: 80px;
+  height: 80px;
+  border: 2px solid black;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 32px;
+}
