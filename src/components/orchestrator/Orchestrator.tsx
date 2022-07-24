@@ -28,6 +28,11 @@ function Orchestrator() {
         return;
       }
 
+      if (guess === solution) {
+        setIsGameFinished(true);
+        return;
+      }
+
       const isSingleLetter = event.key.length === 1;
       const hasTypedAllLetters = guess.length === GUESS_LIMIT_LETTERS;
       const shouldRemoveLastLetter = event.key === "Backspace";
@@ -60,7 +65,7 @@ function Orchestrator() {
     return () => {
       document.removeEventListener("keydown", handleOnKeyDown);
     };
-  }, [guess, currentGuessPosition, isGameFinished]);
+  }, [guess, solution, currentGuessPosition, isGameFinished]);
 
   return (
     <Board
