@@ -1,6 +1,6 @@
 import Board from "components/board/Board";
 import { API, GUESS_LIMIT_LETTERS, LINES_AMOUNT } from "consts";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 
 function pickRandomWord(words: string[]): string {
   return words[Math.floor(Math.random() * words.length)];
@@ -10,7 +10,7 @@ function Orchestrator() {
   const [solution, setSolution] = useState("");
   const [guess, setGuess] = useState("");
   const [currentGuessPosition, setCurrentGuessPosition] = useState(0);
-  const isGameFinished = useRef(false);
+  const [isGameFinished, setIsGameFinished] = useState(false);
 
   useEffect(() => {
     fetch(API)
@@ -24,7 +24,7 @@ function Orchestrator() {
 
   useEffect(() => {
     const handleOnKeyDown = (event: KeyboardEvent) => {
-      if (isGameFinished.current) {
+      if (isGameFinished) {
         return;
       }
 
@@ -39,7 +39,7 @@ function Orchestrator() {
           setCurrentGuessPosition((previousPosition) => previousPosition + 1);
           setGuess("");
         } else {
-          isGameFinished.current = true;
+          setIsGameFinished(true);
         }
 
         return;
@@ -60,9 +60,16 @@ function Orchestrator() {
     return () => {
       document.removeEventListener("keydown", handleOnKeyDown);
     };
-  }, [guess, currentGuessPosition]);
+  }, [guess, currentGuessPosition, isGameFinished]);
 
-  return <Board currentLinePosition={currentGuessPosition} guess={guess} />;
+  return (
+    <Board
+      isFinished={isGameFinished}
+      solution={solution}
+      currentLinePosition={currentGuessPosition}
+      guess={guess}
+    />
+  );
 }
 
 export default Orchestrator;

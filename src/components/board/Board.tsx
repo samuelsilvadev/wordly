@@ -4,13 +4,25 @@ import { useLayoutEffect, useState } from "react";
 import styles from "./board.module.css";
 
 type BoardProps = {
+  isFinished: boolean;
+  solution: string;
   currentLinePosition: number;
   guess: string;
 };
 
-function Board({ currentLinePosition, guess }: BoardProps) {
-  const line = Array(COLUMNS_AMOUNT).fill("-").join("");
-  const [board, setBoard] = useState<string[]>(Array(LINES_AMOUNT).fill(line));
+const hasFinishedTyping = (word: string) => !/-$/.test(word);
+
+const EMPTY_LINE = Array(COLUMNS_AMOUNT).fill("-").join("");
+
+function Board({
+  currentLinePosition,
+  guess,
+  solution,
+  isFinished,
+}: BoardProps) {
+  const [board, setBoard] = useState<string[]>(
+    Array(LINES_AMOUNT).fill(EMPTY_LINE)
+  );
 
   useLayoutEffect(() => {
     setBoard((previousBoard) => {
@@ -25,10 +37,18 @@ function Board({ currentLinePosition, guess }: BoardProps) {
   return (
     <div className={styles.wrapper}>
       <ul className={styles.board}>
-        {board.map((line, index) => {
+        {board.map((word, index) => {
+          const hasPassedToNextLine = index === currentLinePosition - 1;
+
           return (
             <li key={index}>
-              <Line word={line} />
+              <Line
+                word={word}
+                reveal={
+                  (hasPassedToNextLine || isFinished) && hasFinishedTyping(word)
+                }
+                solution={solution}
+              />
             </li>
           );
         })}
